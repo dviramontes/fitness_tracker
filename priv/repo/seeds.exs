@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+App.Accounts.register_user(%{
+  email: "user@localhost.com",
+  password: "Password123!"
+})

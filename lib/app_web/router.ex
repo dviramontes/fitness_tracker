@@ -17,7 +17,7 @@ defmodule AppWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", AppWeb do
+  scope "/home", AppWeb do
     pipe_through :browser
 
     get "/", PageController, :home
@@ -64,8 +64,14 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    get "/", Plugs.Redirect, to: "/track"
+
     live_session :require_authenticated_user,
       on_mount: [{AppWeb.UserAuth, :ensure_authenticated}] do
+      # main view
+      live "/track", TrackLive, :index
+
+      # users
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
